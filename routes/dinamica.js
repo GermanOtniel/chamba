@@ -1,0 +1,21 @@
+const router = require("express").Router();
+const Dinamica = require("../models/Dinamica");
+
+router.post('/new',(req,res, next)=>{
+  Dinamica.create(req.body)
+  .then(dinamica=>{
+      res.json(dinamica)
+  })
+  .catch(e=>next(e))
+});
+router.get('/',(req,res,next)=>{
+  Dinamica.find()
+  .then(dinamicas=>{
+      res.json(dinamicas);
+  })
+  .catch(e=>{
+      res.send('No funco papu...')
+  })
+})
+
+module.exports = router;
