@@ -7,6 +7,7 @@ const CtrCons = require("../models/CentroConsumo");
 router.get('/', (req, res, next) => {
   res.render('index');
 });
+
 router.get("/google", passport.authenticate("google", {
   scope: ["https://www.googleapis.com/auth/plus.login",
           "https://www.googleapis.com/auth/plus.profile.emails.read"]
@@ -24,8 +25,14 @@ router.post('/signup', (req,res)=>{
 router.post('/login', passport.authenticate('local'), (req,res,next)=>{
   return res.json(req.user);
 });
+router.get('/logout' ,(req,res)=>{
+  req.logout();
+  res.status(200);
+  res.send('Sesión finalizada')
+})
 router.get('/profile/:id' ,(req,res)=>{
   User.findById(req.params.id)
+  .populate('centroConsumo','nombre')
   .then(user=>{
     res.json(user);
   })
@@ -45,4 +52,5 @@ router.post('/profile/:id',(req,res, next)=>{
   })
   .catch(e=>next(e));
 });
+
 module.exports = router;
