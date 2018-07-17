@@ -25,10 +25,10 @@ const userSchema = new Schema({
     enum : ['SUPERADMIN', 'GERENTE', 'CHECKTICKET','SUPERVISOR','EMBAJADOR','USER'],
     default : 'USER'
   },
-  puntos: {
-    type:Number,
-    default:0
-  },
+  puntos: [{
+    type:Schema.Types.ObjectId,
+    ref:"Puntos"
+  }],
   centroConsumo:{
     type: Schema.Types.ObjectId,
     ref: "CentroConsumo"
@@ -40,6 +40,10 @@ const userSchema = new Schema({
   dinamicasGanadas:[{
     type:Schema.Types.ObjectId,
     ref:"Dinamica"
+  }],
+  evidencias:[{
+    type:Schema.Types.ObjectId,
+    ref:"Evidencia"
   }],
   notificacion:[{
     type:Schema.Types.ObjectId,

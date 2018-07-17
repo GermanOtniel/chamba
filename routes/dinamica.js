@@ -17,5 +17,11 @@ router.get('/',(req,res,next)=>{
       res.send('No funco papu...')
   })
 })
+router.get('/:id' ,(req,res)=>{
+    Dinamica.findById(req.params.id)
+    .then(dinamica=>{
+      res.json(dinamica);
+    })
+  });
 
 module.exports = router;

@@ -5,7 +5,7 @@ const marcaSchema = new Schema({
   nombre: {
     type:String,
   required:true
-},
+  },
   tipoDestilado:String,
   imagen: String,
   fechaAlta: {

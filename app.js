@@ -127,6 +127,8 @@ const ctrconsumo  = require('./routes/ctrconsumo');
 const marca       = require('./routes/marca');
 const brand       = require('./routes/brand');
 const evidencia   =require('./routes/evidencia');
+const nota   =require('./routes/nota');
+app.use('/nota',nota);
 app.use('/evidencia',evidencia);
 app.use('/brand',brand)
 app.use('/marca',marca);

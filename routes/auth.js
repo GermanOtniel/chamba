@@ -38,9 +38,9 @@ router.get('/profile/:id' ,(req,res)=>{
   })
 });
 router.post('/profile/:id',(req,res, next)=>{
+  console.log('BOOODDDDYYYY: ',req.body);
   User.findByIdAndUpdate(req.params.id, req.body, {new:true})
   .then(user=>{
-    console.log(req.body.centroConsumo._id)
     CtrCons.findByIdAndUpdate(req.body.centroConsumo._id,{
       $push: { usuarios: user._id }
     },{ 'new': true})

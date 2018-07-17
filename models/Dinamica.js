@@ -17,6 +17,8 @@ const dinamicaSchema = new Schema({
     enum: ["Ventas", "Puntos","Otro"],
     default: "Otro"
   },
+  meta: Number,
+  cantidadPuntos:Number,
   tipoConsumo:{
     type: String,
     enum: ["Botella", "Unidad","Otro"],

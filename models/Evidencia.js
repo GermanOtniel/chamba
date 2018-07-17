@@ -4,6 +4,7 @@ const Schema   = mongoose.Schema;
 const evidenciaSchema = new Schema({
   mensaje: String,
   archivo: String,
+  cantidadProducto: Number,
   status:{
     type: String,
     enum:["Aprobada","Desaprobada"],
@@ -13,10 +14,14 @@ const evidenciaSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:"User"
   },
-  dinamica:{
+  dinamicas:[{
     type:Schema.Types.ObjectId,
     ref:"Dinamica"
-  }
+  }],
+  notas:[{
+    type:Schema.Types.ObjectId,
+    ref:"Nota"
+  }]
 },{
     timestamps: {
     createdAt: 'created_at',
