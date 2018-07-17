@@ -2,9 +2,9 @@ require('dotenv').config();
 
 const bodyParser   = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const express      = require('express');
 const favicon      = require('serve-favicon');
-const hbs          = require('hbs');
 const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
@@ -74,6 +74,8 @@ passport.use(new GoogleStrategy({
       return done(err);
     }
     if (user) {
+      //EL USUARIO YA ESTA LOGUEADO
+      console.log(user)
       return done(null, user);
     }
 
@@ -87,7 +89,11 @@ passport.use(new GoogleStrategy({
       if (err) {
         return done(err);
       }
-      done(null, newUser);
+      else{
+        //EL USUARIO ES NUEVO
+        done(null, newUser);
+        console.log(newUser._id);
+      }
     });
   });
 
@@ -97,6 +103,10 @@ passport.use(new GoogleStrategy({
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(cookieSession({
+//   name: 'session',
+//   keys: ['123']
+// }));
 app.use(cookieParser());
 
 // Express View engine setup

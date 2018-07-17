@@ -14,10 +14,10 @@ const evidenciaSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:"User"
   },
-  dinamicas:[{
+  dinamica:{
     type:Schema.Types.ObjectId,
     ref:"Dinamica"
-  }],
+  },
   notas:[{
     type:Schema.Types.ObjectId,
     ref:"Nota"

@@ -16,6 +16,14 @@ router.get("/google", passport.authenticate("google", {
 router.get("/google/callback", passport.authenticate("google"),(req,res)=>{
   return res.json(req.user)
 });
+// router.get('/auth/google/callback',
+//     passport.authenticate('google', {failureRedirect:'/'}),
+//     (req, res) => {
+//         req.session.token = req.user.token;
+//         res.redirect('auth/profile/:id');
+//     }
+// );
+
 router.post('/signup', (req,res)=>{
   User.register(req.body, req.body.password, function(err, user) {
       if (err) return res.json(err);
