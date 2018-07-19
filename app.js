@@ -3,6 +3,7 @@ require('dotenv').config();
 const bodyParser   = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
+const hbs          = require('hbs');
 const express      = require('express');
 const favicon      = require('serve-favicon');
 const mongoose     = require('mongoose');
@@ -12,9 +13,6 @@ const path         = require('path');
 const passport     = require("./helpers/passport");
 const session      = require("express-session"); 
 const cors         = require("cors");
-//GOOGLE OAUTH2.0
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const User = require("./models/User");
 
 
 
@@ -36,8 +34,10 @@ const app = express();
 
 //CORS
 const options = {
+  origin: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
-  origin: true
+  exposedHeaders: ['x-auth-token']
 }
 app.use(cors(options));
 
@@ -64,40 +64,7 @@ passport.deserializeUser(function(user, done) {
 });
 
 //Google authenticate
-passport.use(new GoogleStrategy({
-  clientID: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: "http://localhost:3000/auth/google/callback"
-},(accessToken, refreshToken, profile, done) => {
-  User.findOne({ googleID: profile.id }, (err, user) => {
-    if (err) {
-      return done(err);
-    }
-    if (user) {
-      //EL USUARIO YA ESTA LOGUEADO
-      console.log(user)
-      return done(null, user);
-    }
-
-    const newUser = new User({
-      googleID: profile.id,
-      correo: profile.emails[0].value,
-      nombreUsuario: profile.displayName
-    });
-
-    newUser.save((err) => {
-      if (err) {
-        return done(err);
-      }
-      else{
-        //EL USUARIO ES NUEVO
-        done(null, newUser);
-        console.log(newUser._id);
-      }
-    });
-  });
-
-}));
+//passport.use();
 
 // Middleware Setup
 app.use(logger('dev'));
@@ -137,7 +104,9 @@ const ctrconsumo  = require('./routes/ctrconsumo');
 const marca       = require('./routes/marca');
 const brand       = require('./routes/brand');
 const evidencia   =require('./routes/evidencia');
-const nota   =require('./routes/nota');
+const nota        =require('./routes/nota');
+const dash        =require('./routes/authDash');
+app.use('/dash',dash);
 app.use('/nota',nota);
 app.use('/evidencia',evidencia);
 app.use('/brand',brand)
