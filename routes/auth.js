@@ -22,7 +22,37 @@ router.get("/google/callback", passport.authenticate("google"),(req,res)=>{
 //         res.redirect('auth/profile/:id');
 //     }
 // );
-
+router.post('/google', (req,res)=>{
+  User.findOne({ googleID: req.body.googleId }, (err, user) => {
+      if (err) {
+        console.log(err);
+      }
+      if (user) {
+        //EL USUARIO YA ESTA LOGUEADO
+        //console.log(user)
+        // done(null, user);
+        return res.json(user);
+      } else {
+        const newUser = new User({
+          googleID: req.body.googleId,
+          correo: req.body.correo,
+          nombreUsuario: req.body.nombreUsuario
+        });
+      
+        newUser.save((err) => {
+          if (err) {
+            return done(err);
+          }
+          else{
+            //EL USUARIO ES NUEVO
+            //done(null, newUser);
+            return res.json(newUser);
+            //console.log(newUser);
+          }
+        });
+      }
+  });
+});
 router.post('/signup', (req,res)=>{
   User.register(req.body, req.body.password, function(err, user) {
       if (err) return res.json(err);

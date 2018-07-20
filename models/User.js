@@ -7,13 +7,7 @@ const userSchema = new Schema({
   correo:String,
   nombre: String,
   apellido:  String,
-  googleProvider: {
-    type:{
-      id:String,
-      token:String
-    },
-    select: false
-  },
+  googleId: String,
   fotoPerfil:String,
   codigoPostal: Number,
   ranking: {
