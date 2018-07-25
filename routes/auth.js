@@ -77,7 +77,6 @@ router.get('/profile/:id' ,(req,res)=>{
   })
 });
 router.post('/profile/:id',(req,res, next)=>{
-  console.log('BOOODDDDYYYY: ',req.body);
   User.findByIdAndUpdate(req.params.id, req.body, {new:true})
   .then(user=>{
       CtrCons.findByIdAndUpdate(req.body.centroConsumo._id,{

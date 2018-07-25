@@ -17,6 +17,7 @@ router.post('/new',(req,res, next)=>{
 });
 router.get('/',(req,res,next)=>{
   Dinamica.find()
+  .populate('brand')
   .then(dinamicas=>{
       res.json(dinamicas);
   })
@@ -26,6 +27,7 @@ router.get('/',(req,res,next)=>{
 })
 router.get('/:id' ,(req,res)=>{
     Dinamica.findById(req.params.id)
+    .populate('marcas')
     .then(dinamica=>{
       res.json(dinamica);
     })
