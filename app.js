@@ -98,23 +98,40 @@ app.locals.title = 'Express - Generated with IronGenerator';
 
 
 const auth        = require('./routes/auth');
+app.use('/auth', auth);
+
 const index       = require('./routes/index');
+app.use('/',index);
+
 const dinamica    = require('./routes/dinamica');
+app.use('/dinamica',dinamica);
+
 const ctrconsumo  = require('./routes/ctrconsumo');
+app.use('/ctrconsumo',ctrconsumo);
+
 const marca       = require('./routes/marca');
+app.use('/marca',marca);
+
 const brand       = require('./routes/brand');
+app.use('/brand',brand)
+
 const evidencia   =require('./routes/evidencia');
+app.use('/evidencia',evidencia);
+
 const nota        =require('./routes/nota');
+app.use('/nota',nota);
+
 const dash        =require('./routes/authDash');
 app.use('/dash',dash);
-app.use('/nota',nota);
-app.use('/evidencia',evidencia);
-app.use('/brand',brand)
-app.use('/marca',marca);
-app.use('/ctrconsumo',ctrconsumo);
-app.use('/dinamica',dinamica);
-app.use('/',index);
-app.use('/auth', auth);
+
+const zona        =require('./routes/zona');
+app.use('/zona',zona);
+
+const pais        =require('./routes/pais');
+app.use('/pais',pais);
+
+const estado      =require('./routes/estado');
+app.use('/estado',estado);
 
 
 module.exports = app;

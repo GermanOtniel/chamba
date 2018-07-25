@@ -5,7 +5,7 @@ const centroSchema = new Schema({
   nombre: String,
   fechaAlta: {
     type: String,
-    required: true
+    required: false
   },
   fechaBaja: {
     type: String,

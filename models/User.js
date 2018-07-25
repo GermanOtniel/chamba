@@ -7,7 +7,7 @@ const userSchema = new Schema({
   correo:String,
   nombre: String,
   apellido:  String,
-  googleId: String,
+  googleID: String,
   fotoPerfil:String,
   codigoPostal: Number,
   ranking: {
@@ -23,6 +23,10 @@ const userSchema = new Schema({
     enum : ['SUPERADMIN', 'GERENTE', 'CHECKTICKET','SUPERVISOR','EMBAJADOR','USER'],
     default : 'USER'
   },
+  ventas: [{
+    type:Schema.Types.ObjectId,
+    ref:"Ventas"
+  }],
   puntos: [{
     type:Schema.Types.ObjectId,
     ref:"Puntos"

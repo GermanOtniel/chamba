@@ -11,9 +11,9 @@ const brandSchema = new Schema({
     type: String,
     required: false
   },
-  centrosConsumo:[{
+  dinamicas:[{
     type:Schema.Types.ObjectId,
-    ref:"CentroConsumo"
+    ref:"Dinamica"
   }],
   users:[{
     type:Schema.Types.ObjectId,

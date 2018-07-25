@@ -1,10 +1,17 @@
 const router = require("express").Router();
 const Dinamica = require("../models/Dinamica");
+const Brand = require("../models/Brand");
 
 router.post('/new',(req,res, next)=>{
   Dinamica.create(req.body)
   .then(dinamica=>{
-      res.json(dinamica)
+      Brand.findByIdAndUpdate(req.body.brand,{
+        $push: { dinamicas: dinamica._id }
+        },{ 'new': true})
+        .then(brand=>{
+        })
+        .catch(e=>console.log(e))
+    res.json(dinamica)
   })
   .catch(e=>next(e))
 });

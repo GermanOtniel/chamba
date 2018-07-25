@@ -4,9 +4,8 @@ const Schema   = mongoose.Schema;
 const marcaSchema = new Schema({
   nombre: {
     type:String,
-  required:true
+    required:true
   },
-  tipoDestilado:String,
   imagen: String,
   fechaAlta: {
     type: String,

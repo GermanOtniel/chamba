@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
 
-const puntosSchema = new Schema({
+const ventasSchema = new Schema({
   cantidad: {
     type:Number,
     required:true
@@ -28,5 +28,5 @@ const puntosSchema = new Schema({
 
   
   
-  module.exports = mongoose.model('Puntos', puntosSchema);
+  module.exports = mongoose.model('Ventas', ventasSchema);
  

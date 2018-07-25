@@ -5,10 +5,15 @@ const evidenciaSchema = new Schema({
   mensaje: String,
   archivo: String,
   cantidadProducto: Number,
+  modalidad:{
+    type: String,
+    enum:["Puntos","Ventas","S/M"],
+    default: "S/M"
+  },
   status:{
     type: String,
-    enum:["Aprobada","Desaprobada"],
-    default: "Desaprobada"
+    enum:["Aprobada","Desaprobada","Pendiente"],
+    default: "Pendiente"
   },
   creador:{
     type:Schema.Types.ObjectId,

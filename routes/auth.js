@@ -23,6 +23,7 @@ router.get("/google/callback", passport.authenticate("google"),(req,res)=>{
 //     }
 // );
 router.post('/google', (req,res)=>{
+  console.log(req.body.googleId);
   User.findOne({ googleID: req.body.googleId }, (err, user) => {
       if (err) {
         console.log(err);
@@ -70,6 +71,7 @@ router.get('/logout' ,(req,res)=>{
 router.get('/profile/:id' ,(req,res)=>{
   User.findById(req.params.id)
   .populate('centroConsumo','nombre')
+  .populate('brand')
   .then(user=>{
     res.json(user);
   })
@@ -78,14 +80,14 @@ router.post('/profile/:id',(req,res, next)=>{
   console.log('BOOODDDDYYYY: ',req.body);
   User.findByIdAndUpdate(req.params.id, req.body, {new:true})
   .then(user=>{
-    CtrCons.findByIdAndUpdate(req.body.centroConsumo._id,{
-      $push: { usuarios: user._id }
-    },{ 'new': true})
-    .then(ctr=>{
-      console.log(ctr)
-    })
-    .catch(e=>console.log(e))
-      res.json(user);
+      CtrCons.findByIdAndUpdate(req.body.centroConsumo._id,{
+        $push: { usuarios: user._id }
+      },{ 'new': true})
+      .then(ctr=>{
+        console.log(ctr)
+      })
+      .catch(e=>console.log(e))
+    res.json(user);
   })
   .catch(e=>next(e));
 });

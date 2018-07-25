@@ -8,22 +8,8 @@ const dinamicaSchema = new Schema({
   },
   descripcion: String,
   imagenPremio:String,
-  ganadores:[{
-    type:Schema.Types.ObjectId,
-    ref:"User"
-  }],
-  modalidad: {
-    type: String,
-    enum: ["Ventas", "Puntos","Otro"],
-    default: "Otro"
-  },
   meta: Number,
-  cantidadPuntos:Number,
-  tipoConsumo:{
-    type: String,
-    enum: ["Botella", "Unidad","Otro"],
-    default: "Otro"
-  },
+  puntos:Number,
   fechaInicio:{
     type: String,
     required: true
@@ -32,6 +18,11 @@ const dinamicaSchema = new Schema({
     type: String,
     required: true
   },
+  modalidad: {
+    type: String,
+    enum: ["Ventas", "Puntos","Otro"],
+    default: "Otro"
+  },
   activa:{
     type: String,
     enum: ["Activa", "Inactiva"],
@@ -39,10 +30,10 @@ const dinamicaSchema = new Schema({
   },
   status:{
     type: String,
-    enum:["Aprobada","Desaprobada"],
-    default: "Desaprobada"
+    enum:["Aprobada","Desaprobada","Pendiente"],
+    default: "Pendiente"
   },
-  marca:[{
+  marcas:[{
     type: Schema.Types.ObjectId,
     ref:"Marca"
   }],
@@ -50,10 +41,18 @@ const dinamicaSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref:"User"
   }],
+  ganadores:[{
+    type:Schema.Types.ObjectId,
+    ref:"User"
+  }],
   centroConsumo: [{
     type: Schema.Types.ObjectId,
     ref: "CentroConsumo",
   }],
+  zona:{
+    type: Schema.Types.ObjectId,
+    ref:"Zona"
+  },
   brand:{
     type:Schema.Types.ObjectId,
     ref: "Brand"
