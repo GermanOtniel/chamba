@@ -18,6 +18,7 @@ router.post('/new',(req,res, next)=>{
 router.get('/',(req,res,next)=>{
   Dinamica.find()
   .populate('brand')
+  .populate('marcas')
   .then(dinamicas=>{
       res.json(dinamicas);
   })
@@ -33,4 +34,14 @@ router.get('/:id' ,(req,res)=>{
     })
   });
 
+  router.post('/winner/:id' ,(req,res)=>{
+    //console.log('BODY: ',req.body,'PARAMS: ',req.params.id)
+    Dinamica.findByIdAndUpdate(req.params.id,{
+      $push: { ganadores: req.body.ganador }
+      },{ 'new': true})
+    .then(dinamica=>{
+      res.json(dinamica);
+    })
+    .catch(e=>console.log(e)) 
+  });
 module.exports = router;

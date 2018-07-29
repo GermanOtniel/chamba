@@ -16,7 +16,8 @@ const userSchema = new Schema({
   },
   calificacion: {
     type:Number,
-    default:0
+    default:0,
+    min:0
   },
   puesto:{
     type: String,
@@ -50,6 +51,10 @@ const userSchema = new Schema({
   notificacion:[{
     type:Schema.Types.ObjectId,
     ref:"Dinamica"
+  }],
+  notas:[{
+    type:Schema.Types.ObjectId,
+    ref:"Nota"
   }]
 },{
     timestamps: {

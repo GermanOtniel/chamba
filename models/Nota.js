@@ -18,6 +18,10 @@ const notaSchema = new Schema({
   evidenciaPertenece:{
     type:Schema.Types.ObjectId,
     ref:"Evidencia"
+  },
+  dinamica:{
+    type: Schema.Types.ObjectId,
+    ref:"Dinamica"
   }
 },{
     timestamps: {

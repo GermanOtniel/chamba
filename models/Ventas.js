@@ -14,7 +14,7 @@ const ventasSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Dinamica"
   },
-  dueño:{
+  user:{
     type: Schema.Types.ObjectId,
     ref: "User"
   }

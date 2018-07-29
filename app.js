@@ -124,6 +124,9 @@ app.use('/nota',nota);
 const dash        =require('./routes/authDash');
 app.use('/dash',dash);
 
+const ventas      =require('./routes/ventas');
+app.use('/ventas',ventas);
+
 const zona        =require('./routes/zona');
 app.use('/zona',zona);
 

@@ -18,9 +18,11 @@ router.get('/',(req,res,next)=>{
   })
 })
 router.get('/:id',(req,res,next)=>{
+    console.log(req.params.id)
     Brand.findById(req.params.id)
     .populate('marcas')
     .then(brand=>{
+        console.log(brand)
         res.json(brand);
     })
     .catch(e=>{

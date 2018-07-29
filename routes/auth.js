@@ -72,6 +72,7 @@ router.get('/profile/:id' ,(req,res)=>{
   User.findById(req.params.id)
   .populate('centroConsumo','nombre')
   .populate('brand')
+  .populate('puntos')
   .then(user=>{
     res.json(user);
   })

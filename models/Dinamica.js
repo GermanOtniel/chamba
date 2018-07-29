@@ -10,6 +10,11 @@ const dinamicaSchema = new Schema({
   imagenPremio:String,
   meta: Number,
   puntos:Number,
+  ventasTotales:{
+    type:Number,
+    default:0,
+    min:0
+  },
   fechaInicio:{
     type: String,
     required: true

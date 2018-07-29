@@ -1,9 +1,12 @@
 const router = require("express").Router();
 const Evidencia = require("../models/Evidencia");
 const Dinamica = require("../models/Dinamica");
+const Puntos = require("../models/Puntos");
+const Ventas = require("../models/Ventas");
+const User = require("../models/User");
+const Nota = require("../models/Nota");
 
 router.post('/new',(req,res, next)=>{
-  console.log(req.body)
   Evidencia.create(req.body)
   .then(evidencia=>{
       Dinamica.findByIdAndUpdate(req.body.dinamica,{
@@ -13,6 +16,13 @@ router.post('/new',(req,res, next)=>{
         console.log(dinamica)
       })
       .catch(e=>console.log(e))
+      User.findByIdAndUpdate(req.body.creador,{
+        $push: { evidencias: evidencia._id }
+      },{ 'new': true})
+      .then(user=>{
+      })
+    .catch(e=>console.log(e))
+    res.json(evidencia);
   })
   .catch(e=>next(e))
 });
@@ -30,15 +40,63 @@ router.get('/',(req,res,next)=>{
 router.get('/:id' ,(req,res)=>{
   Evidencia.findById(req.params.id)
   .populate('creador')
+  .populate('dinamica')
   .then(evidencia=>{
     res.json(evidencia);
   })
 });
+
+//ESTA RUTA ES DONDE EL EJECUTIVO APRUEBA O RECHAZA UNA EVIDENCIA.
 router.post('/evi/:id',(req,res, next)=>{
-  console.log(req.body)
   Evidencia.findByIdAndUpdate(req.params.id, req.body, {new:true})
   .then(evidencia=>{
-    console.log(evidencia.status)
+    if(evidencia.status === "Aprobada" && evidencia.modalidad === "Puntos")
+    { 
+      User.findOneAndUpdate({_id: req.body.creador._id}, { $inc: {calificacion: req.body.dinamica.puntos * evidencia.cantidadProducto}})
+        .then(user=>{
+          console.log(user)
+        })
+        .catch(e=>console.log(e))
+    }
+    else if (evidencia.status === "Aprobada" && evidencia.modalidad === "Ventas")
+    {
+      let bodyVentas = {
+        cantidad: evidencia.cantidadProducto,
+        brand: req.body.dinamica.brand,
+        dinamica: req.body.dinamica._id,
+        user: req.body.creador._id
+      }
+      Ventas.create(bodyVentas)
+       .then(ventas=>{
+        User.findByIdAndUpdate(req.body.creador._id,{
+          $push: { ventas: ventas._id }
+        },{ 'new': true})
+        .then(user=>{
+        })
+        .catch(e=>console.log(e))
+       })
+       .catch(e=>console.log(e))
+    }
+    else if ( evidencia.status === "Desaprobada" )
+    {
+      let bodyNota = {
+        cuerpo: req.body.nota,
+        destinatario: req.body.creador._id,
+        remitenteOtro: req.body.dinamica.brand,
+        evidenciaPertenece: evidencia._id,
+        dinamica: req.body.dinamica._id
+      }
+      Nota.create(bodyNota)
+       .then(nota=>{
+        User.findByIdAndUpdate(req.body.creador._id,{
+          $push: { notas: nota._id }
+        },{ 'new': true})
+        .then(user=>{
+        })
+        .catch(e=>console.log(e))
+       })
+       .catch(e=>console.log(e))
+    }
     res.json(evidencia);
   })
   .catch(e=>next(e));
