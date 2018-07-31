@@ -19,6 +19,11 @@ const userSchema = new Schema({
     default:0,
     min:0
   },
+  total:{
+    type:Number,
+    default:0,
+    min:0
+  },
   puesto:{
     type: String,
     enum : ['SUPERADMIN', 'GERENTE', 'CHECKTICKET','SUPERVISOR','EMBAJADOR','USER'],

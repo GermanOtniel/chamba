@@ -37,6 +37,16 @@ router.get('/',(req,res,next)=>{
       res.send('No funco papu...')
   })
 })
+router.get('/dinamica/:id',(req,res,next)=>{
+  Evidencia.find({dinamica:req.params.id,status:"Aprobada"})
+  .populate('creador')
+  .then(evidencias=>{
+      res.json(evidencias);
+  })
+  .catch(e=>{
+      res.send('No funco papu...')
+  })
+})
 router.get('/:id' ,(req,res)=>{
   Evidencia.findById(req.params.id)
   .populate('creador')

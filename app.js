@@ -136,5 +136,8 @@ app.use('/pais',pais);
 const estado      =require('./routes/estado');
 app.use('/estado',estado);
 
+const usuarios      =require('./routes/usuarios');
+app.use('/usuarios',usuarios);
+
 
 module.exports = app;

@@ -23,5 +23,17 @@ router.get('/profile/:id' ,(req,res)=>{
     res.json(user);
   })
 });
+router.post('/user/:id',(req,res, next)=>{
+  User.findByIdAndUpdate(req.params.id, req.body, {new:true})
+  .then(user=>{
+    res.json(user);
+  })
+  .catch(e=>next(e));
+});
+router.get('/logout' ,(req,res)=>{
+  req.logout();
+  res.status(200);
+  res.send('Sesión finalizada')
+})
 
 module.exports = router;

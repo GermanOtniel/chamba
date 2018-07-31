@@ -29,6 +29,8 @@ router.get('/',(req,res,next)=>{
 router.get('/:id' ,(req,res)=>{
     Dinamica.findById(req.params.id)
     .populate('marcas')
+    .populate('evidencias')
+    .populate('centroConsumo')
     .then(dinamica=>{
       res.json(dinamica);
     })

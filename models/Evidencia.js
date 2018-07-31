@@ -10,6 +10,11 @@ const evidenciaSchema = new Schema({
     enum:["Puntos","Ventas","S/M"],
     default: "S/M"
   },
+  total:{
+    type:Number,
+    default:0,
+    min:0
+  },
   status:{
     type: String,
     enum:["Aprobada","Desaprobada","Pendiente"],
