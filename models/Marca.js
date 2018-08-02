@@ -18,6 +18,11 @@ const marcaSchema = new Schema({
   brand:{
     type:Schema.Types.ObjectId,
     ref:"Brand"
+  },
+  total:{
+    type:Number,
+    min:0,
+    default:0
   }
 },{
     timestamps: {

@@ -20,6 +20,24 @@ const evidenciaSchema = new Schema({
     enum:["Aprobada","Desaprobada","Pendiente"],
     default: "Pendiente"
   },
+  marcas:[{
+    ref: { 
+      type:Schema.Types.ObjectId, 
+      ref:"Marca"
+    },
+    puntosVentas:{
+      type: Number,
+      default: 0,
+      min:0,
+      required: true
+    },
+    ventas:{
+      type:Number,
+      default: 0,
+      min: 0,
+      required: true
+    }
+  }],
   creador:{
     type:Schema.Types.ObjectId,
     ref:"User"

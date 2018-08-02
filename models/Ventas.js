@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
 
 const ventasSchema = new Schema({
-  cantidad: {
-    type:Number,
-    required:true
-  },
   brand:{
     type: Schema.Types.ObjectId,
     ref: "Brand"
@@ -17,6 +13,35 @@ const ventasSchema = new Schema({
   user:{
     type: Schema.Types.ObjectId,
     ref: "User"
+  },
+  status:{
+    type: String,
+    enum:["Canjeada","No Canjeada"],
+    default: "No Canjeada"
+  },
+  marcas:[{
+    ref: { 
+      type:Schema.Types.ObjectId, 
+      ref:"Marca"
+    },
+    puntosVentas:{
+      type: Number,
+      default: 0,
+      min:0,
+      required: true
+    },
+    ventas:{
+      type:Number,
+      default: 0,
+      min: 0,
+      required: true
+    }
+  }],
+  total:{
+    type:Number,
+    default: 0,
+    min: 0,
+    required: true
   }
 },{
     timestamps: {

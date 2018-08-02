@@ -8,8 +8,30 @@ const dinamicaSchema = new Schema({
   },
   descripcion: String,
   imagenPremio:String,
-  meta: Number,
+  ganador: Boolean,
   puntos:Number,
+  ventas:[],
+  marcaPuntosVentas:[{
+    ref: { 
+      type:Schema.Types.ObjectId, 
+      ref:"Marca"
+    },
+    puntosVentas:{
+      type: Number,
+      default: 0,
+      min:0,
+      required: true
+    },
+    puntosUsuario:{
+      type: Number,
+      default: 0,
+      min:0
+    },
+    nombre:{
+      type: String,
+      required:false
+    }
+  }],
   ventasTotales:{
     type:Number,
     default:0,

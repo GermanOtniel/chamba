@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const Dinamica = require("../models/Dinamica");
 const Brand = require("../models/Brand");
+const Marca = require("../models/Marca");
+const Ventas = require("../models/Ventas");
 
 router.post('/new',(req,res, next)=>{
   Dinamica.create(req.body)
@@ -28,7 +30,7 @@ router.get('/',(req,res,next)=>{
 })
 router.get('/:id' ,(req,res)=>{
     Dinamica.findById(req.params.id)
-    .populate('marcas')
+    .populate({ path: 'marcaPuntosVentas._id', model: Marca })
     .populate('evidencias')
     .populate('centroConsumo')
     .then(dinamica=>{
@@ -39,9 +41,16 @@ router.get('/:id' ,(req,res)=>{
   router.post('/winner/:id' ,(req,res)=>{
     //console.log('BODY: ',req.body,'PARAMS: ',req.params.id)
     Dinamica.findByIdAndUpdate(req.params.id,{
-      $push: { ganadores: req.body.ganador }
+      $push: { ganadores: req.body.winner }
       },{ 'new': true})
     .then(dinamica=>{
+      Ventas.update({"dinamica": dinamica._id}, //query, you can also query for email
+      {$set: {"status": "Canjeada"}},
+      {"multi": true})
+      .then(ventas=>{
+        console.log(ventas)
+      })
+      .catch(e=>console.log(e))
       res.json(dinamica);
     })
     .catch(e=>console.log(e)) 

@@ -5,6 +5,8 @@ const Puntos = require("../models/Puntos");
 const Ventas = require("../models/Ventas");
 const User = require("../models/User");
 const Nota = require("../models/Nota");
+const Marca = require("../models/Marca");
+
 
 router.post('/new',(req,res, next)=>{
   Evidencia.create(req.body)
@@ -51,6 +53,7 @@ router.get('/:id' ,(req,res)=>{
   Evidencia.findById(req.params.id)
   .populate('creador')
   .populate('dinamica')
+  .populate({ path: 'marcas._id', model: Marca })
   .then(evidencia=>{
     res.json(evidencia);
   })
@@ -62,7 +65,12 @@ router.post('/evi/:id',(req,res, next)=>{
   .then(evidencia=>{
     if(evidencia.status === "Aprobada" && evidencia.modalidad === "Puntos")
     { 
-      User.findOneAndUpdate({_id: req.body.creador._id}, { $inc: {calificacion: req.body.dinamica.puntos * evidencia.cantidadProducto}})
+      let marcas = evidencia.marcas.map(marca=>marca)
+      let puntos = 0;
+      for (let i = 0; i<marcas.length; i++){
+        puntos += marcas[i].ventas * marcas[i].puntosVentas
+      }
+      User.findOneAndUpdate({_id: req.body.creador._id}, { $inc: {calificacion: puntos}})
         .then(user=>{
           console.log(user)
         })
@@ -71,7 +79,7 @@ router.post('/evi/:id',(req,res, next)=>{
     else if (evidencia.status === "Aprobada" && evidencia.modalidad === "Ventas")
     {
       let bodyVentas = {
-        cantidad: evidencia.cantidadProducto,
+        marcas: evidencia.marcas,
         brand: req.body.dinamica.brand,
         dinamica: req.body.dinamica._id,
         user: req.body.creador._id
