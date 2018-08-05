@@ -42,6 +42,8 @@ router.get('/',(req,res,next)=>{
 router.get('/dinamica/:id',(req,res,next)=>{
   Evidencia.find({dinamica:req.params.id,status:"Aprobada"})
   .populate('creador')
+  .populate('dinamica')
+  .populate({ path: 'marcas._id', model: Marca })
   .then(evidencias=>{
       res.json(evidencias);
   })

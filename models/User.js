@@ -33,9 +33,28 @@ const userSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:"Ventas"
   }],
-  puntos: [{
-    type:Schema.Types.ObjectId,
-    ref:"Puntos"
+  ventasDinamica: [],
+  marcas:[{
+    ref: { 
+      type:Schema.Types.ObjectId, 
+      ref:"Marca"
+    },
+    puntosVentas:{
+      type: Number,
+      default: 0,
+      min:0,
+      required: true
+    },
+    puntosUsuario:{
+      type: Number,
+      default: 0,
+      min:0,
+      required:true
+    },
+    nombre:{
+      type: String,
+      required:false
+    }
   }],
   centroConsumo:{
     type: Schema.Types.ObjectId,

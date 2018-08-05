@@ -26,10 +26,6 @@ const dinamicaSchema = new Schema({
       type: Number,
       default: 0,
       min:0
-    },
-    nombre:{
-      type: String,
-      required:false
     }
   }],
   ventasTotales:{
