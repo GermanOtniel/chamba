@@ -14,6 +14,10 @@ const userSchema = new Schema({
     type:Number,
     default:0
   },
+  ganador:{
+    type: Boolean,
+    default:false
+  },
   calificacion: {
     type:Number,
     default:0,

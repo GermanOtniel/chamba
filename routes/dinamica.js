@@ -21,6 +21,7 @@ router.get('/',(req,res,next)=>{
   Dinamica.find()
   .populate('brand')
   .populate('marcas')
+  .populate({ path: 'marcaPuntosVentas._id', model: Marca })
   .then(dinamicas=>{
       res.json(dinamicas);
   })
