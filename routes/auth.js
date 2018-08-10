@@ -8,13 +8,13 @@ router.get('/', (req, res, next) => {
   res.render('index');
 });
 
-router.get("/google", passport.authenticate("google", {
-  scope: ['profile','email']
-}));
+// router.get("/google", passport.authenticate("google", {
+//   scope: ['profile','email']
+// }));
 
-router.get("/google/callback", passport.authenticate("google"),(req,res)=>{
-  return res.json(req.user)
-});
+// router.get("/google/callback", passport.authenticate("google"),(req,res)=>{
+//   return res.json(req.user)
+// });
 // router.get('/auth/google/callback',
 //     passport.authenticate('google', {failureRedirect:'/'}),
 //     (req, res) => {
@@ -22,6 +22,12 @@ router.get("/google/callback", passport.authenticate("google"),(req,res)=>{
 //         res.redirect('auth/profile/:id');
 //     }
 // );
+
+// ----------------------------------
+
+// ESTAS RUTAS SE USAN EN LA PWA 
+
+// 1) AUTENTICAR CON GOOGLE
 router.post('/google', (req,res)=>{
   console.log(req.body.googleId);
   User.findOne({ googleID: req.body.googleId }, (err, user) => {
@@ -54,20 +60,28 @@ router.post('/google', (req,res)=>{
       }
   });
 });
+
+// 2) REGISTRARME EN LA APP
 router.post('/signup', (req,res)=>{
   User.register(req.body, req.body.password, function(err, user) {
       if (err) return res.json(err);
         res.json(user);
       })
 });
+
+// 3) LOGUEARME UNA VEZ QUE YA ESTOY REGISTRADO
 router.post('/login', passport.authenticate('local'), (req,res,next)=>{
   return res.json(req.user);
 });
+
+// 4) DESLOGUEARME DE LA APP
 router.get('/logout' ,(req,res)=>{
   req.logout();
   res.status(200);
   res.send('Sesión finalizada')
 })
+
+// 5) LA RUTA PARA ENTRAR A MI PERFIL 
 router.get('/profile/:id' ,(req,res)=>{
   User.findById(req.params.id)
   .populate('centroConsumo','nombre')
@@ -77,6 +91,8 @@ router.get('/profile/:id' ,(req,res)=>{
     res.json(user);
   })
 });
+
+// 6) RUTA PARA EDITAR MI PERFIL
 router.post('/profile/:id',(req,res, next)=>{
   User.findByIdAndUpdate(req.params.id, req.body, {new:true})
   .then(user=>{
@@ -84,7 +100,6 @@ router.post('/profile/:id',(req,res, next)=>{
         $push: { usuarios: user._id }
       },{ 'new': true})
       .then(ctr=>{
-        console.log(ctr)
       })
       .catch(e=>console.log(e))
     res.json(user);

@@ -8,6 +8,10 @@ const dinamicaSchema = new Schema({
   },
   descripcion: String,
   imagenPremio:String,
+  imagen:{
+    type: Boolean,
+    required:true
+  },
   ganador: Boolean,
   puntos:Number,
   ventas:[],

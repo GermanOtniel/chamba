@@ -2,6 +2,9 @@ const router = require("express").Router();
 const Estado = require("../models/Estado");
 const Pais   = require("../models/Pais");
 
+
+// SE USAN SOLO EN EL DASHBOARD PARA CREAR ESTADOS Y REPRESENTARLOS
+
 router.post('/new',(req,res, next)=>{
   Estado.create(req.body)
   .then(estado=>{

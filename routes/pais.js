@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const Pais = require("../models/Pais");
 
+// SE USAN EN EL DASHBOARD PARA CREAR Y ENCONTRAR UN PAIS
+
 router.post('/new',(req,res, next)=>{
   Pais.create(req.body)
   .then(pais=>{

@@ -8,6 +8,8 @@ const Nota = require("../models/Nota");
 const Marca = require("../models/Marca");
 
 
+
+// 1) SE USA PARA CREAR UNA EVIDENCIA EN LA PWA
 router.post('/new',(req,res, next)=>{
   Evidencia.create(req.body)
   .then(evidencia=>{
@@ -28,6 +30,10 @@ router.post('/new',(req,res, next)=>{
   })
   .catch(e=>next(e))
 });
+
+
+// SE USA EN EL DASHBOARD PARA TRAER TODAS LAS EVIDENCIAS Y
+// REPRESENTARLAS EN UNA TABLA
 router.get('/',(req,res,next)=>{
   Evidencia.find()
   .populate('creador')
@@ -39,6 +45,10 @@ router.get('/',(req,res,next)=>{
       res.send('No funco papu...')
   })
 })
+
+
+// SE USA EN EL DASHBOARD ESPECIFICAMENTE EN EL COMPONENTE DE REPORTES/DINAMICA DETAIL
+// PARA TRAER TODAS LAS EVIDENCIAS DE CIERTA DINAMICA
 router.get('/dinamica/:id',(req,res,next)=>{
   Evidencia.find({dinamica:req.params.id,status:"Aprobada"})
   .populate('creador')
@@ -51,6 +61,9 @@ router.get('/dinamica/:id',(req,res,next)=>{
       res.send('No funco papu...')
   })
 })
+
+
+// SE USA EN EL DASHBOARD PARA REVISAR DETALLES DE EVIDENCIAS
 router.get('/:id' ,(req,res)=>{
   Evidencia.findById(req.params.id)
   .populate('creador')
@@ -61,7 +74,7 @@ router.get('/:id' ,(req,res)=>{
   })
 });
 
-//ESTA RUTA ES DONDE EL EJECUTIVO APRUEBA O RECHAZA UNA EVIDENCIA.
+//ESTA RUTA SE USA EN EL DASHBOARD; ES DONDE EL EJECUTIVO APRUEBA O RECHAZA UNA EVIDENCIA.
 router.post('/evi/:id',(req,res, next)=>{
   Evidencia.findByIdAndUpdate(req.params.id, req.body, {new:true})
   .then(evidencia=>{

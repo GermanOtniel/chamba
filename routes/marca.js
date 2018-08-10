@@ -2,6 +2,10 @@ const router = require("express").Router();
 const Marca = require("../models/Marca");
 const Brand = require("../models/Brand");
 
+
+// SE USAN SOLO EN EL DASHBOARD
+
+
 router.post('/new',(req,res, next)=>{
   Marca.create(req.body)
   .then(marca=>{
@@ -26,13 +30,13 @@ router.get('/',(req,res,next)=>{
       res.send('No funco papu...')
   })
 })
-router.get('/bybrand',(req,res,next)=>{
-  Marca.find({ brand:'5b563f90c2cf5a086cbc08f5' })
-  .then(marcas=>{
-      res.json(marcas);
-  })
-  .catch(e=>{
-      res.send('No funco papu...')
-  })
-})
+// router.get('/bybrand',(req,res,next)=>{
+//   Marca.find({ brand:'5b563f90c2cf5a086cbc08f5' })
+//   .then(marcas=>{
+//       res.json(marcas);
+//   })
+//   .catch(e=>{
+//       res.send('No funco papu...')
+//   })
+// })
 module.exports = router;
