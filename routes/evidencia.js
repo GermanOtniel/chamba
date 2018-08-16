@@ -33,9 +33,22 @@ router.post('/new',(req,res, next)=>{
 
 
 // SE USA EN EL DASHBOARD PARA TRAER TODAS LAS EVIDENCIAS Y
-// REPRESENTARLAS EN UNA TABLA
+// REPRESENTARLAS EN UNA TABLA SOLO ES PARA LOS SUPERADMINS
 router.get('/',(req,res,next)=>{
   Evidencia.find()
+  .populate('creador')
+  .populate('dinamica')
+  .then(evidencias=>{
+      res.json(evidencias);
+  })
+  .catch(e=>{
+      res.send('No funco papu...')
+  })
+})
+
+//SE USA PARA TRAER LAS EVIDENCIAS DE UN BRAND EN ESPECIFICO
+router.get('/dash/:id',(req,res,next)=>{
+  Evidencia.find({brand:req.params.id})
   .populate('creador')
   .populate('dinamica')
   .then(evidencias=>{

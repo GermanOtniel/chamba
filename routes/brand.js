@@ -25,6 +25,17 @@ router.get('/',(req,res,next)=>{
   })
 })
 
+// PARA TRAER EL BRAND ESPECIFICO D EUN USUARIO PARA QUE CREE UNA MARCA
+router.get('/dash/:id',(req,res,next)=>{
+    Brand.find({_id:req.params.id})
+    .then(brands=>{
+        res.json(brands);
+    })
+    .catch(e=>{
+        res.send('No funco papu...')
+    })
+  })
+
 // 3) ESTA SE USA EN EL COMPONENETE DE DINAMICAS DEL DASHBOARD 
 // PARA QUE CUANDO UN USUARIO DE UN BRAND CREE UNA DINAMICA LE 
 //SALGAN LAS MARCAS DE ESE BRAND EN ESPECIFICO

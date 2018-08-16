@@ -30,6 +30,16 @@ router.get('/',(req,res,next)=>{
       res.send('No funco papu...')
   })
 })
+router.get('/dash/:id',(req,res,next)=>{
+  Marca.find({brand:req.params.id})
+  .populate('brand')
+  .then(marcas=>{
+      res.json(marcas);
+  })
+  .catch(e=>{
+      res.send('No funco papu...')
+  })
+})
 // router.get('/bybrand',(req,res,next)=>{
 //   Marca.find({ brand:'5b563f90c2cf5a086cbc08f5' })
 //   .then(marcas=>{

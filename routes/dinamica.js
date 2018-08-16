@@ -43,6 +43,33 @@ router.get('/',(req,res,next)=>{
   })
 })
 
+// ruta para traer solo las dinamicas que correspondan con el centro de consumo del USUARIO APP
+router.get('/pwa/:id',(req,res,next)=>{
+  Dinamica.find({centroConsumo: req.params.id})
+  .populate('brand')
+  .populate('marcas')
+  .populate({ path: 'marcaPuntosVentas._id', model: Marca })
+  .then(dinamicas=>{
+      res.json(dinamicas);
+  })
+  .catch(e=>{
+      res.send('No funco papu...')
+  })
+})
+// ruta para traer solo las dinamicas que correspondan con el BRAND del USUARIO DASHBOARD
+router.get('/dash/:id',(req,res,next)=>{
+  Dinamica.find({brand: req.params.id})
+  .populate('brand')
+  .populate('marcas')
+  .populate({ path: 'marcaPuntosVentas._id', model: Marca })
+  .then(dinamicas=>{
+      res.json(dinamicas);
+  })
+  .catch(e=>{
+      res.send('No funco papu...')
+  })
+})
+
 // 3) SE USA PARA DASHBORD Y PWA
 // ME DA EL DETALLE DE CIERTA DINAMICA
 router.get('/:id' ,(req,res)=>{

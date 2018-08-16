@@ -56,6 +56,10 @@ const evidenciaSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:"Dinamica"
   },
+  brand:{
+    type:Schema.Types.ObjectId,
+    ref:"Brand"
+  },
   notas:[{
     type:Schema.Types.ObjectId,
     ref:"Nota"
