@@ -26,6 +26,38 @@ router.post('/new',(req,res, next)=>{
       .then(user=>{
       })
     .catch(e=>console.log(e))
+    if(evidencia.status === "Aprobada" && evidencia.modalidad === "Puntos")
+    { 
+      let marcas = evidencia.marcas.map(marca=>marca)
+      let puntos = 0;
+      for (let i = 0; i<marcas.length; i++){
+        puntos += marcas[i].ventas * marcas[i].puntosVentas
+      }
+      User.findOneAndUpdate({_id: evidencia.creador}, { $inc: {calificacion: puntos}})
+        .then(user=>{
+          console.log(user)
+        })
+        .catch(e=>console.log(e))
+    }
+    else if (evidencia.status === "Aprobada" && evidencia.modalidad === "Ventas")
+    {
+      let bodyVentas = {
+        marcas: evidencia.marcas,
+        brand: evidencia.brand,
+        dinamica: evidencia.dinamica,
+        user: evidencia.creador
+      }
+      Ventas.create(bodyVentas)
+       .then(ventas=>{
+        User.findByIdAndUpdate(evidencia.creador,{
+          $push: { ventas: ventas._id }
+        },{ 'new': true})
+        .then(user=>{
+        })
+        .catch(e=>console.log(e))
+       })
+       .catch(e=>console.log(e))
+    }
     res.json(evidencia);
   })
   .catch(e=>next(e))
@@ -38,6 +70,22 @@ router.get('/',(req,res,next)=>{
   Evidencia.find()
   .populate('creador')
   .populate('dinamica')
+  .then(evidencias=>{
+      res.json(evidencias);
+  })
+  .catch(e=>{
+      res.send('No funco papu...')
+  })
+})
+
+
+// EVIDENCIAS POR USUARIO PWA
+
+router.get('/pwa/:id',(req,res,next)=>{
+  Evidencia.find({creador:req.params.id,status:"Pendiente"})
+  .populate('creador')
+  .populate('dinamica')
+  .populate({ path: 'marcas._id', model: Marca })
   .then(evidencias=>{
       res.json(evidencias);
   })
@@ -147,4 +195,5 @@ router.post('/evi/:id',(req,res, next)=>{
   })
   .catch(e=>next(e));
 });
+
 module.exports = router;

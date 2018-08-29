@@ -3,6 +3,7 @@ const Schema   = mongoose.Schema;
 
 const centroSchema = new Schema({
   nombre: String,
+  codigoPostal: Number,
   fechaAlta: {
     type: String,
     required: false
@@ -16,6 +17,8 @@ const centroSchema = new Schema({
     enum: ["Activo", "Inactivo"],
     default: "Inactivo"
   },
+  ventas:[],
+  ventasUsuario:[],
   usuarios:[{
     type:Schema.Types.ObjectId,
     ref:"User"

@@ -12,8 +12,10 @@ router.post('/new',(req,res, next)=>{
   })
   .catch(e=>next(e))
 });
-router.get('/',(req,res,next)=>{
-  Nota.find()
+router.get('/:id',(req,res,next)=>{
+  Nota.find({destinatario:req.params.id})
+  .populate('dinamica')
+  .populate('evidenciaPertenece')
   .then(notas=>{
       res.json(notas);
   })

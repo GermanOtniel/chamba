@@ -10,6 +10,15 @@ const userSchema = new Schema({
   googleID: String,
   fotoPerfil:String,
   codigoPostal: Number,
+  cuentaConfirmada:{
+    type: Boolean,
+    default:false
+  },
+  correoEnviado:{
+    type: Boolean,
+    default:false
+  },
+  telefono:String,
   ranking: {
     type:Number,
     default:0

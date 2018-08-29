@@ -26,6 +26,10 @@ const dinamicaSchema = new Schema({
       min:0,
       required: true
     },
+    descripcion:{
+      type: String,
+      required: false
+    },
     puntosUsuario:{
       type: Number,
       default: 0,
@@ -54,6 +58,10 @@ const dinamicaSchema = new Schema({
     type: String,
     enum: ["Activa", "Inactiva"],
     default: "Activa"
+  },
+  checkEvidences:{
+    type: Boolean,
+    required:true
   },
   status:{
     type: String,

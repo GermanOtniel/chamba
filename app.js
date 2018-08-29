@@ -93,7 +93,7 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
 
 // default value for title local
-app.locals.title = 'Express - Generated with IronGenerator';
+app.locals.title = '1puntocinco';
 
 
 
@@ -138,6 +138,9 @@ app.use('/estado',estado);
 
 const usuarios      =require('./routes/usuarios');
 app.use('/usuarios',usuarios);
+
+const confirm      =require('./routes/confirm');
+app.use('/confirm',confirm);
 
 
 module.exports = app;
