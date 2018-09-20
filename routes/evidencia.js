@@ -20,12 +20,12 @@ router.post('/new',(req,res, next)=>{
         console.log(dinamica)
       })
       .catch(e=>console.log(e))
-      User.findByIdAndUpdate(req.body.creador,{
-        $push: { evidencias: evidencia._id }
-      },{ 'new': true})
-      .then(user=>{
-      })
-    .catch(e=>console.log(e))
+    //   User.findByIdAndUpdate(req.body.creador,{
+    //     $push: { evidencias: evidencia._id }
+    //   },{ 'new': true})
+    //   .then(user=>{
+    //   })
+    // .catch(e=>console.log(e))
     if(evidencia.status === "Aprobada" && evidencia.modalidad === "Puntos")
     { 
       let marcas = evidencia.marcas.map(marca=>marca)
@@ -123,6 +123,23 @@ router.get('/dinamica/:id',(req,res,next)=>{
   })
 })
 
+// SE USA EN EL DASHBOARD ESPECIFICAMENTE EN EL COMPONENTE DE REPORTES/DINAMICA DETAIL
+// PARA TRAER TODAS LAS EVIDENCIAS DE CIERTA DINAMICA por FEEEEECHAAAAAA
+router.get('/dinamica/date/:id',(req,res,next)=>{
+  let fechas = req.query.fechas;
+  let arrayFechas = fechas.split(',');
+  Evidencia.find({dinamica:req.params.id,status:"Aprobada"}).where('fecha').in(arrayFechas)
+  .populate('creador')
+  .populate('dinamica')
+  .populate({ path: 'marcas._id', model: Marca })
+  .then(evidencias=>{
+      res.json(evidencias);
+  })
+  .catch(e=>{
+      res.send('No funco papu...')
+  })
+})
+
 
 // SE USA EN EL DASHBOARD PARA REVISAR DETALLES DE EVIDENCIAS
 router.get('/:id' ,(req,res)=>{
@@ -178,16 +195,11 @@ router.post('/evi/:id',(req,res, next)=>{
         destinatario: req.body.creador._id,
         remitenteOtro: req.body.dinamica.brand,
         evidenciaPertenece: evidencia._id,
-        dinamica: req.body.dinamica._id
+        dinamica: req.body.dinamica._id,
+        todos:false
       }
       Nota.create(bodyNota)
        .then(nota=>{
-        User.findByIdAndUpdate(req.body.creador._id,{
-          $push: { notas: nota._id }
-        },{ 'new': true})
-        .then(user=>{
-        })
-        .catch(e=>console.log(e))
        })
        .catch(e=>console.log(e))
     }

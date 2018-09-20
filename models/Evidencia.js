@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
 
 const evidenciaSchema = new Schema({
+  fecha:String,
   mensaje: String,
   archivo: String,
   cantidadProducto: Number,

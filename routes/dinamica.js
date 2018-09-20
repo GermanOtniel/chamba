@@ -11,12 +11,6 @@ const Ventas = require("../models/Ventas");
 router.post('/new',(req,res, next)=>{
   Dinamica.create(req.body)
   .then(dinamica=>{
-      Brand.findByIdAndUpdate(req.body.brand,{
-        $push: { dinamicas: dinamica._id }
-        },{ 'new': true})
-        .then(brand=>{
-        })
-        .catch(e=>console.log(e))
     res.json(dinamica)
   })
   .catch(e=>next(e))

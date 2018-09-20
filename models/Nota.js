@@ -22,6 +22,11 @@ const notaSchema = new Schema({
   dinamica:{
     type: Schema.Types.ObjectId,
     ref:"Dinamica"
+  },
+  todos:{
+    type:Boolean,
+    required:true,
+    default:false
   }
 },{
     timestamps: {
