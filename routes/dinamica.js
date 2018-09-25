@@ -121,4 +121,23 @@ router.get('/:id' ,(req,res)=>{
     })
     .catch(e=>console.log(e)) 
   });
+
+  // 6) SE USA EN LE DASHBOARD PARA EDITAR UNA DINAMICA
+
+  router.post('/edit/:id',(req,res, next)=>{
+    Dinamica.findByIdAndUpdate(req.params.id, req.body, {new:true})
+    .then(dinamica=>{
+      res.json(dinamica);
+    })
+    .catch(e=>next(e));
+  });
+
+  // 7) SE USA EN EL DASHBOARD EN EL COMPONENTE DE DINAMICAS.JS PARA ELIMINAR UNA DINAMICA 
+  router.delete('/delete/:id',(req,res,next)=>{
+    Dinamica.findOneAndRemove({_id:req.params.id})
+    .then(r=>{
+        res.json(r)
+    })
+    .catch(e=>console.log(e))
+})
 module.exports = router;

@@ -154,58 +154,76 @@ router.get('/:id' ,(req,res)=>{
 
 //ESTA RUTA SE USA EN EL DASHBOARD; ES DONDE EL EJECUTIVO APRUEBA O RECHAZA UNA EVIDENCIA.
 router.post('/evi/:id',(req,res, next)=>{
-  Evidencia.findByIdAndUpdate(req.params.id, req.body, {new:true})
+  Evidencia.findById(req.params.id)
   .then(evidencia=>{
-    if(evidencia.status === "Aprobada" && evidencia.modalidad === "Puntos")
-    { 
-      let marcas = evidencia.marcas.map(marca=>marca)
-      let puntos = 0;
-      for (let i = 0; i<marcas.length; i++){
-        puntos += marcas[i].ventas * marcas[i].puntosVentas
-      }
-      User.findOneAndUpdate({_id: req.body.creador._id}, { $inc: {calificacion: puntos}})
-        .then(user=>{
-          console.log(user)
-        })
-        .catch(e=>console.log(e))
+    if(evidencia.status === "Pendiente"){
+    Evidencia.findByIdAndUpdate(evidencia._id, req.body, {new:true})
+      .then(evidencia=>{
+        if(evidencia.status === "Aprobada" && evidencia.modalidad === "Puntos")
+        { 
+          let marcas = evidencia.marcas.map(marca=>marca)
+          let puntos = 0;
+          for (let i = 0; i<marcas.length; i++){
+            puntos += marcas[i].ventas * marcas[i].puntosVentas
+          }
+          User.findOneAndUpdate({_id: req.body.creador._id}, { $inc: {calificacion: puntos}})
+            .then(user=>{
+              console.log(user)
+            })
+            .catch(e=>console.log(e))
+        }
+        else if (evidencia.status === "Aprobada" && evidencia.modalidad === "Ventas")
+        {
+          let bodyVentas = {
+            marcas: evidencia.marcas,
+            brand: req.body.dinamica.brand,
+            dinamica: req.body.dinamica._id,
+            user: req.body.creador._id
+          }
+          Ventas.create(bodyVentas)
+           .then(ventas=>{
+            User.findByIdAndUpdate(req.body.creador._id,{
+              $push: { ventas: ventas._id }
+            },{ 'new': true})
+            .then(user=>{
+            })
+            .catch(e=>console.log(e))
+           })
+           .catch(e=>console.log(e))
+        }
+        else if ( evidencia.status === "Desaprobada" )
+        {
+          let bodyNota = {
+            cuerpo: req.body.nota,
+            destinatario: req.body.creador._id,
+            remitenteOtro: req.body.dinamica.brand,
+            evidenciaPertenece: evidencia._id,
+            dinamica: req.body.dinamica._id,
+            todos:false
+          }
+          Nota.create(bodyNota)
+           .then(nota=>{
+           })
+           .catch(e=>console.log(e))
+        }
+        res.json(evidencia);
+      })
+      .catch(e=>next(e));
     }
-    else if (evidencia.status === "Aprobada" && evidencia.modalidad === "Ventas")
-    {
-      let bodyVentas = {
-        marcas: evidencia.marcas,
-        brand: req.body.dinamica.brand,
-        dinamica: req.body.dinamica._id,
-        user: req.body.creador._id
-      }
-      Ventas.create(bodyVentas)
-       .then(ventas=>{
-        User.findByIdAndUpdate(req.body.creador._id,{
-          $push: { ventas: ventas._id }
-        },{ 'new': true})
-        .then(user=>{
-        })
-        .catch(e=>console.log(e))
-       })
-       .catch(e=>console.log(e))
+    else{
+      return res.json('EviRevAnt')
     }
-    else if ( evidencia.status === "Desaprobada" )
-    {
-      let bodyNota = {
-        cuerpo: req.body.nota,
-        destinatario: req.body.creador._id,
-        remitenteOtro: req.body.dinamica.brand,
-        evidenciaPertenece: evidencia._id,
-        dinamica: req.body.dinamica._id,
-        todos:false
-      }
-      Nota.create(bodyNota)
-       .then(nota=>{
-       })
-       .catch(e=>console.log(e))
-    }
-    res.json(evidencia);
   })
-  .catch(e=>next(e));
+  .catch(e=>console.log(e))
+
 });
 
+  //  SE USA EN EL DASHBOARD EN EL COMPONENTE DE Evidencias.JS PARA ELIMINAR UNA EVIDENCIA 
+  router.delete('/delete/:id',(req,res,next)=>{
+    Evidencia.findOneAndRemove({_id:req.params.id})
+    .then(r=>{
+        res.json(r)
+    })
+    .catch(e=>console.log(e))
+})
 module.exports = router;
