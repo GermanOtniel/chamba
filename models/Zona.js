@@ -17,9 +17,7 @@ const zonaSchema = new Schema({
     updatedAt: 'updated_at'
     }
   });
-
-
-  
   
   module.exports = mongoose.model('Zona', zonaSchema);
- 
+// UN CENTRO DE CONSUMO DEBE DE PERTENECER A UNA ZONA ES POR ESO QUE SE CREO ESTE MODELO 
+// PARA PODER TENER UNA AGRUPACION MAS ESTRATEGICA Y GEOGRAFICA DE LOS CENTROS DE CONSUMO 

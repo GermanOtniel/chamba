@@ -39,7 +39,7 @@ router.get('/',(req,res,next)=>{
 
 // ruta para traer solo las dinamicas que correspondan con el centro de consumo del USUARIO APP
 router.get('/pwa/:id',(req,res,next)=>{
-  Dinamica.find({centroConsumo: req.params.id})
+  Dinamica.find({centroConsumo: req.params.id,status:"Aprobada",activa:"Activa"})
   .populate('brand')
   .populate('marcas')
   .populate({ path: 'marcaPuntosVentas._id', model: Marca })
@@ -136,6 +136,15 @@ router.get('/:id' ,(req,res)=>{
   router.delete('/delete/:id',(req,res,next)=>{
     Dinamica.findOneAndRemove({_id:req.params.id})
     .then(r=>{
+      if(r.modalidad === "Ventas"){
+        Ventas.remove({dinamica:req.params.id})
+        .then(r=>{
+          console.log(r)
+        })
+        .catch(e=>{
+          console.log(e)
+        })
+      }
         res.json(r)
     })
     .catch(e=>console.log(e))

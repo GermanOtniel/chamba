@@ -24,9 +24,6 @@ const puntosSchema = new Schema({
     updatedAt: 'updated_at'
     }
   });
-
-
-  
   
   module.exports = mongoose.model('Puntos', puntosSchema);
- 
+// NO SE ESTA USANDO ESTE MODELO, QUEDO OBSOLETO 

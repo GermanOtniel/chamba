@@ -28,16 +28,18 @@ router.post('/new',(req,res, next)=>{
     // .catch(e=>console.log(e))
     if(evidencia.status === "Aprobada" && evidencia.modalidad === "Puntos")
     { 
-      let marcas = evidencia.marcas.map(marca=>marca)
-      let puntos = 0;
-      for (let i = 0; i<marcas.length; i++){
-        puntos += marcas[i].ventas * marcas[i].puntosVentas
-      }
-      User.findOneAndUpdate({_id: evidencia.creador}, { $inc: {calificacion: puntos}})
-        .then(user=>{
-          console.log(user)
-        })
-        .catch(e=>console.log(e))
+      //      REVISA LA RUTA evidencia/evi/:id esta mas abajo
+      console.log('SE USARA CUANDO HABILITEMOS LO DE LOS PUNTOS GLOBALES')
+      // let marcas = evidencia.marcas.map(marca=>marca)
+      // let puntos = 0;
+      // for (let i = 0; i<marcas.length; i++){
+      //   puntos += marcas[i].ventas * marcas[i].puntosVentas
+      // }
+      // User.findOneAndUpdate({_id: evidencia.creador}, { $inc: {calificacion: puntos}})
+      //   .then(user=>{
+      //     console.log(user)
+      //   })
+      //   .catch(e=>console.log(e))
     }
     else if (evidencia.status === "Aprobada" && evidencia.modalidad === "Ventas")
     {
@@ -95,8 +97,23 @@ router.get('/pwa/:id',(req,res,next)=>{
 })
 
 //SE USA PARA TRAER LAS EVIDENCIAS DE UN BRAND EN ESPECIFICO
+router.get('/all/dash/:id',(req,res,next)=>{
+  let status = req.query.status;
+  Evidencia.find({dinamica:req.params.id})
+  .populate('creador')
+  .populate('dinamica')
+  .then(evidencias=>{
+      res.json(evidencias);
+  })
+  .catch(e=>{
+      res.send('No funco papu...')
+  })
+})
+
+//SE USA PARA TRAER LAS EVIDENCIAS DE UN BRAND EN ESPECIFICO
 router.get('/dash/:id',(req,res,next)=>{
-  Evidencia.find({brand:req.params.id})
+  let status = req.query.status;
+  Evidencia.find({dinamica:req.params.id,status:status})
   .populate('creador')
   .populate('dinamica')
   .then(evidencias=>{
@@ -161,16 +178,19 @@ router.post('/evi/:id',(req,res, next)=>{
       .then(evidencia=>{
         if(evidencia.status === "Aprobada" && evidencia.modalidad === "Puntos")
         { 
-          let marcas = evidencia.marcas.map(marca=>marca)
-          let puntos = 0;
-          for (let i = 0; i<marcas.length; i++){
-            puntos += marcas[i].ventas * marcas[i].puntosVentas
-          }
-          User.findOneAndUpdate({_id: req.body.creador._id}, { $inc: {calificacion: puntos}})
-            .then(user=>{
-              console.log(user)
-            })
-            .catch(e=>console.log(e))
+          //      REVISA LA RUTA evidencia/new esta mas arriba
+
+          console.log('SE USARA CUANDO OCUPEMOS PUNTOS GLOBALES.')
+          // let marcas = evidencia.marcas.map(marca=>marca)
+          // let puntos = 0;
+          // for (let i = 0; i<marcas.length; i++){
+          //   puntos += marcas[i].ventas * marcas[i].puntosVentas
+          // }
+          // User.findOneAndUpdate({_id: req.body.creador._id}, { $inc: {calificacion: puntos}})
+          //   .then(user=>{
+          //     console.log(user)
+          //   })
+          //   .catch(e=>console.log(e))
         }
         else if (evidencia.status === "Aprobada" && evidencia.modalidad === "Ventas")
         {
@@ -222,6 +242,14 @@ router.post('/evi/:id',(req,res, next)=>{
   router.delete('/delete/:id',(req,res,next)=>{
     Evidencia.findOneAndRemove({_id:req.params.id})
     .then(r=>{
+        console.log(r.dinamica)
+        Dinamica.update({_id:r.dinamica},{$pop:{evidencias:1}})
+        .then(r=>{
+          console.log(r)
+        })
+        .catch(e=>{
+          console.log(e)
+        })
         res.json(r)
     })
     .catch(e=>console.log(e))

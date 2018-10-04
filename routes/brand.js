@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Brand = require("../models/Brand");
+const User = require("../models/User");
 
 // SE USAN EN EL DASHBOARD 
 
@@ -44,6 +45,18 @@ router.get('/:id',(req,res,next)=>{
     .populate('marcas')
     .then(brand=>{
         res.json(brand);
+    })
+    .catch(e=>{
+        res.send('No funco papu...')
+    })
+  })
+
+  // 4) TRAER USUARIOS DE UN BRAND DASHBOARD
+
+  router.get('/users/:id',(req,res,next)=>{
+    User.find({brand:req.params.id})
+    .then(users=>{
+        res.json(users);
     })
     .catch(e=>{
         res.send('No funco papu...')

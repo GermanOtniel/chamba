@@ -29,7 +29,7 @@ router.get('/', (req, res, next) => {
 
 // ESTAS RUTAS SE USAN EN LA PWA 
 
-// 1) AUTENTICAR CON GOOGLE
+// 1.1) AUTENTICAR REGISTRAR CON GOOGLE
 router.post('/google', (req,res)=>{
   User.findOne({ googleID: req.body.googleId }, (err, user) => {
       if (err) {
@@ -44,7 +44,8 @@ router.post('/google', (req,res)=>{
         const newUser = new User({
           googleID: req.body.googleId,
           correo: req.body.correo,
-          nombreUsuario: req.body.nombreUsuario
+          nombreUsuario: req.body.nombreUsuario,
+          terminosCondiciones: req.body.terminosCondiciones
         });
       
         newUser.save((err) => {
@@ -58,6 +59,22 @@ router.post('/google', (req,res)=>{
             //console.log(newUser);
           }
         });
+      }
+  });
+});
+// 1.2) AUTENTICAR INICIAR SESION CON GOOGLE
+router.post('/login/google', (req,res)=>{
+  User.findOne({ googleID: req.body.googleId }, (err, user) => {
+      if (err) {
+        console.log(err);
+      }
+      if (user) {
+        //EL USUARIO YA ESTA LOGUEADO
+        //console.log(user)
+        // done(null, user);
+        return res.json(user);
+      } else {
+        return res.json("NER");
       }
   });
 });

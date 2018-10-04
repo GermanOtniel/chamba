@@ -34,9 +34,7 @@ const notaSchema = new Schema({
     updatedAt: 'updated_at'
     }
   });
-
-
-  
   
   module.exports = mongoose.model('Nota', notaSchema);
- 
+// EL MODELO DE LAS NOTAS QUE SE CREAN CUANDO SE RECHAZA UNA EVIDENCIA O SE CREA UN MENSAJE GLOBAL
+// SI ES UN MENSAJE GLOBAL EL ATRIBUTO TODOS ES TRUE

@@ -48,7 +48,7 @@ router.get('/profile/:id' ,(req,res)=>{
 });
 
 // 5) SE USA PARA EDITAR EL PUESTO DE UN USUARIO DEL DASHBOARD
-//ESTA RUTA DEBERIA DE IR EN EL ARCHIVODE usuarios.js 
+//ESTA RUTA DEBERIA DE IR EN EL ARCHIVO DE usuarios.js 
 router.post('/user/:id',(req,res, next)=>{
   User.findByIdAndUpdate(req.params.id, req.body, {new:true})
   .then(user=>{

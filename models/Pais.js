@@ -13,9 +13,6 @@ const paisSchema = new Schema({
     updatedAt: 'updated_at'
     }
   });
-
-
-  
   
   module.exports = mongoose.model('Pais', paisSchema);
- 
+// UN ESTADO DEBE PERTENECER A UN PAIS 

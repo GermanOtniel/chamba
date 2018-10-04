@@ -2,7 +2,8 @@ const router = require("express").Router();
 const transporter = require('../helpers/nodemailer');
 const User = require("../models/User");
 
-
+// SE CREA UN EMAIL DE VERIFICACION DE CORREO Y UNA VEZ ENVIADO EL CORREO SE CAMBIA EL ATRIBUTO DE CORREO ENVIADO DEL USUARIOA TRUE
+// PARA QUE YA NO SE LE VUELVA A MANDAR ESE CORREO
 router.post('/email/:id' ,(req,res)=>{
   var destinatario = req.body.dest
   var direccion = req.body.sitio + req.params.id
@@ -31,6 +32,8 @@ router.post('/email/:id' ,(req,res)=>{
   })
 });
 
+// ES LA RUTA QUE VISITA UN USUARIO CUANDO CONFIRMA SU CORREO ELECTRONICO
+// CUANDO VISITA ESTA PAGINA O ESTA URL EL ATRIBUTO DE CUENTACONFIRMADA DE ESE USUARIO CAMBIA A TRUE
 router.get('/:id' ,(req,res)=>{
   User.findByIdAndUpdate(req.params.id, {$set: { cuentaConfirmada:true } }, { 'new':true } )
   .then(r=>{

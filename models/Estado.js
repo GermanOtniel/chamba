@@ -17,9 +17,6 @@ const estadoSchema = new Schema({
     updatedAt: 'updated_at'
     }
   });
-
-
-  
   
   module.exports = mongoose.model('Estado', estadoSchema);
- 
+// UNA ZONA DEBE PERTENECER A UN ESTADO, POR ESO SE CREO ESTE MODELO, PARA TENER UN OREN GEOGRAFICO PARA MAS ADELANTE

@@ -34,9 +34,7 @@ const marcaSchema = new Schema({
     updatedAt: 'updated_at'
     }
   });
-
-
-  
   
   module.exports = mongoose.model('Marca', marcaSchema);
- 
+ // ES EL MODELO PARA LAS MARCAS QUE LOS BRANDS TENDRAN, LAS MARCAS QUE SE TENDRAN QUE VENDER EN LAS DINAMICAS
+ // LAS MARCAS PERTENECEN A UN BRAND, UN BRAND SOLO PODRA VER SUS MARCAS, EXCEPTO EL BRAND DE 1PUNTOCINCO, ESE BRAND PUEDE VERLO TODO
