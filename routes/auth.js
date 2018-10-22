@@ -114,14 +114,14 @@ router.get('/profile/:id' ,(req,res)=>{
 router.post('/profile/:id',(req,res, next)=>{
   User.findByIdAndUpdate(req.params.id, req.body, {new:true})
   .then(user=>{
-    if(req.body.centroConsumo !== undefined ){
-      CtrCons.findByIdAndUpdate(req.body.centroConsumo._id,{
-        $push: { usuarios: user._id }
-      },{ 'new': true})
-      .then(ctr=>{
-      })
-      .catch(e=>console.log(e))
-    }
+    // if(req.body.centroConsumo !== undefined ){
+    //   CtrCons.findByIdAndUpdate(req.body.centroConsumo._id,{
+    //     $push: { usuarios: user._id }
+    //   },{ 'new': true})
+    //   .then(ctr=>{
+    //   })
+    //   .catch(e=>console.log(e))
+    // }
     res.json(user);
   })
   .catch(e=>next(e));
