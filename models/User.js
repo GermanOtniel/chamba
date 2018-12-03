@@ -70,6 +70,50 @@ const userSchema = new Schema({
       required:false
     }
   }],
+  habilidades:[{
+    limpieza:{
+      type: Number,
+      default: 0,
+      min:0,
+      max: 5,
+      required: false
+    },
+    puntualidad:{
+      type: Number,
+      default: 0,
+      min:0,
+      max: 5,
+      required: false
+    },
+    disciplinado:{
+      type: Number,
+      default: 0,
+      min:0,
+      max: 5,
+      required: false
+    },
+    colaborativo:{
+      type: Number,
+      default: 0,
+      min:0,
+      max: 5,
+      required: false
+    }
+  }],
+  documentos:{
+    idOficial:{
+      type: String,
+      required: false
+    },
+    actaNac:{
+      type: String,
+      required: false
+    },
+    curp:{
+      type: String,
+      required: false
+    }
+  },
   centroConsumo:{
     type: Schema.Types.ObjectId,
     ref: "CentroConsumo"

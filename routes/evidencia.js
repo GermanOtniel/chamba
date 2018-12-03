@@ -158,7 +158,8 @@ router.get('/dinamica/date/:id',(req,res,next)=>{
 })
 
 
-// SE USA EN EL DASHBOARD PARA REVISAR DETALLES DE EVIDENCIAS
+// SE USA EN EL DASHBOARD PARA REVISAR DETALLES DE EVIDENCIAS Y TAMBIEN EN LA PWA PARA TRAER UNA EVIDENCIA Y 
+// DESPUES EDITARLA...PERO ESTA RUTA SOLO LA TRAE...
 router.get('/:id' ,(req,res)=>{
   Evidencia.findById(req.params.id)
   .populate('creador')
@@ -254,4 +255,20 @@ router.post('/evi/:id',(req,res, next)=>{
     })
     .catch(e=>console.log(e))
 })
+
+// RUTA PARA EDITAR UNA EVIDENCIA EN LA PWA
+router.post('/edit/:id',(req,res, next)=>{
+  Evidencia.findByIdAndUpdate(req.params.id, req.body, {new:true})
+  .then(evidencia=>{
+    Nota.findOneAndRemove({evidenciaPertenece:evidencia._id})
+    .then(nota=>{
+      console.log(nota)
+    })
+    .catch(e=>console.log(e))
+    res.json(evidencia);
+  })
+  .catch(e=>next(e));
+});
+
+
 module.exports = router;

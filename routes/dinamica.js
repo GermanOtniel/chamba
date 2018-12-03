@@ -3,6 +3,7 @@ const Dinamica = require("../models/Dinamica");
 const Brand = require("../models/Brand");
 const Marca = require("../models/Marca");
 const Ventas = require("../models/Ventas");
+const Centro = require("../models/CentroConsumo");
 
 
 // AQUI ESTAN REVUELTAS UNAS SE USAN SOLO PARA EL DASHBOARD Y OTRAS PARA DASHBOARD Y PWA
@@ -149,4 +150,31 @@ router.get('/:id' ,(req,res)=>{
     })
     .catch(e=>console.log(e))
 })
+
+// 8) SE USA EN EL DASHBOARD PARA TRAER LAS DINAMICAS CORRESPONDIENTES DE UN BRAND Y QUE POSTERIORMENTE 
+// SAQUE LOS CENTROS DE CONSUMO DE TODAS ESTAS DINAMICAS 
+// PARA QUE A SU VEZ SAQUEMOS LOS IDS DE ESOS CENTROS DE CONSUMO Y TRAIGAMOS 
+// A LOS USUARIOS QUE TENGAN ESOS IDS DE CENTROS DE CONSUMO COM SUS CENTROS DE CONSUMO
+  router.get('/dashdinacentusers/:id',(req,res,next)=>{
+    Dinamica.find({brand: req.params.id,activa:'Activa'})
+    .then(dinamicas=>{
+      let centros = []
+        for(let i = 0; i < dinamicas.length; i++){
+          for(let j =0; j < dinamicas[i].centroConsumo.length; j++ ){
+            centros.push(dinamicas[i].centroConsumo[j])
+          }
+          }
+        Centro.find({activo:"Activo"}).where('_id').in(centros)
+        .populate('zona')
+        .then(centros=>{
+            res.json(centros)
+        })
+        .catch(e=>{
+            res.json(e)
+        })
+    })
+    .catch(e=>{
+        res.send('No funco papu...')
+    })
+  })  
 module.exports = router;

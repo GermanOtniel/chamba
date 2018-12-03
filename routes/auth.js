@@ -45,7 +45,35 @@ router.post('/google', (req,res)=>{
           googleID: req.body.googleId,
           correo: req.body.correo,
           nombreUsuario: req.body.nombreUsuario,
-          terminosCondiciones: req.body.terminosCondiciones
+          terminosCondiciones: req.body.terminosCondiciones,
+          habilidades:[
+            {
+              "_id": null,
+              "limpieza": 5,
+              "puntualidad": 5,
+              "disciplinado": 5,
+              "colaborativo": 5
+          },
+          {
+              "_id": null,
+              "limpieza": 5,
+              "puntualidad": 5,
+              "disciplinado": 5,
+              "colaborativo": 5
+          },
+          {
+              "_id": null,
+              "limpieza": 5,
+              "puntualidad": 5,
+              "disciplinado": 5,
+              "colaborativo": 5
+          }
+          ],
+          documentos:{
+            "idOficial": "https://firebasestorage.googleapis.com/v0/b/filetest-210500.appspot.com/o/testing%2Fnoimagen.jpg?alt=media&token=ce3e9648-3740-465b-bc26-3318de70d4b0",
+            "actaNac": "https://firebasestorage.googleapis.com/v0/b/filetest-210500.appspot.com/o/testing%2Fnoimagen.jpg?alt=media&token=ce3e9648-3740-465b-bc26-3318de70d4b0",
+            "curp": "https://firebasestorage.googleapis.com/v0/b/filetest-210500.appspot.com/o/testing%2Fnoimagen.jpg?alt=media&token=ce3e9648-3740-465b-bc26-3318de70d4b0"
+        }
         });
       
         newUser.save((err) => {

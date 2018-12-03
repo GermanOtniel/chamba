@@ -7,6 +7,7 @@ const User   = require("../models/User");
  
 router.get('/',(req,res,next)=>{
   User.find()
+  .populate('centroConsumo')
   .then(usuarios=>{
       res.json(usuarios);
   })
@@ -14,5 +15,37 @@ router.get('/',(req,res,next)=>{
       res.send('No funco papu...')
   })
 })
+
+
+
+// ES PARA AGREGAR HABILIDADES A UN USUARIO DESDE EL DASHBOARD
+
+router.post('/edithabilities/:id',(req,res, next)=>{
+    User.findByIdAndUpdate(req.params.id,{ $push: { habilidades: req.body}},{'new' : true})
+    .then(user=>{
+        User.update({_id:user._id},{$pop:{habilidades:-1}})
+            .then(user=>{
+                res.json('Succesfull')
+            })
+            .catch(e=>console.log(e))
+    })
+    .catch(e=>next(e));
+  });
+
+
+// TRAER USUARIOS POR FECHA DE REGISTRO 
+
+// router.get('/',(req,res,next)=>{
+//     let startDate = "2018-11-29T00:01:00.175Z";
+//     let endDate = "2018-11-30T17:36:22.175Z";
+//   User.find({ created_at: { $gte: startDate, $lt: endDate }})
+//   .populate('centroConsumo')
+//   .then(usuarios=>{
+//       res.json(usuarios);
+//   })
+//   .catch(e=>{
+//       res.send('No funco papu...')
+//   })
+// })
 
 module.exports = router;
